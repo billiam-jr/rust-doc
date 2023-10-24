@@ -18,9 +18,52 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from rust-doc!');
 	});
+	const docProvider = vscode.languages.registerCompletionItemProvider(
+		"rust",
+		{
+		  provideCompletionItems(
+			document: vscode.TextDocument,
+			position: vscode.Position
+		  ) {
+			// get all text until the `position` and check if it reads `console.`
+			// and if so then complete if `log`, `warn`, and `error`
+			const linePrefix = document
+			  .lineAt(position)
+			  .text.slice(0, position.character);
+			if (!linePrefix.endsWith("///")) {
+			  return undefined;
+			}
 
+			return [new RustDocstringCompletionItem(document, position)];
+		},
+		},
+		"/"
+	);
+
+	context.subscriptions.push(doc_provider);
 	context.subscriptions.push(disposable);
 }
+
+
+
+class RustDocstringCompletionItem extends vscode.CompletionItem {
+	constructor(_: vscode.TextDocument, position: vscode.Position) {
+	  super("Generate Docstring", vscode.CompletionItemKind.Snippet);
+	  this.insertText = "";
+	  this.filterText = "///";
+	  this.sortText = "\0";
+
+	  this.range = new vscode.Range(
+		new vscode.Position(position.line, 0),
+		position
+	  );
+
+	  this.command = {
+		command: "rust-doc.helloWorld",
+		title: "Generate Docstring",
+	  };
+	}
+  }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
