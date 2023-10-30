@@ -14,7 +14,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "rust-doc.helloWorld",
+        "command": "rust-doc.generateRustDocstringCommand",
         "title": "Hello World"
       }
     ]
