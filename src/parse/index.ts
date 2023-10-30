@@ -1,1 +1,1 @@
-export { parse } from "./parse";
+export { generateDocString as parse } from "./parse";

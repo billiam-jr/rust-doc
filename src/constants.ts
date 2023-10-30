@@ -5,3 +5,6 @@ export const extensionRoot: ExtensionRoot = { path: "" };
 export const debug = true;
 export const extensionID = "rust-doc";
 export const generateRustDocstringCommand = "rust-doc.generateRustDocstringCommand";
+
+type ArgTuple = [string,string];
+export {ArgTuple as ArgTuple};
